@@ -6,19 +6,12 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { Button } from '@/components/ui/button'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
 import { useSupplyChain, type SupplierRiskRow } from '@/context/SupplyChainContext'
 import { cn } from '@/lib/utils'
 import { FuelType } from '@/data/types'
-import { type RiskLevel, hasCompatibleComponents } from '@/data/supply-chain'
-import { AlertTriangle, ArrowRightLeft, ChevronDown, Leaf, Fuel, Boxes } from 'lucide-react'
-import { ComparisonSheet } from './ComparisonSheet'
-import { ComponentComparisonSheet } from './ComponentComparisonSheet'
+import type { RiskLevel } from '@/data/supply-chain'
+import { AlertTriangle, ArrowRightLeft, Leaf, Fuel } from 'lucide-react'
+import { UnifiedChangeSheet } from './UnifiedChangeSheet'
 
 const RISK_STYLES: Record<RiskLevel, string> = {
   low: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
@@ -43,8 +36,7 @@ export interface SupplierRiskTableProps {}
 export function SupplierRiskTable(props: SupplierRiskTableProps) {
   const {} = props
   const { supplierRows, selectedAirplane } = useSupplyChain()
-  const [supplierSheetRow, setSupplierSheetRow] = useState<SupplierRiskRow | null>(null)
-  const [componentSheetRow, setComponentSheetRow] = useState<SupplierRiskRow | null>(null)
+  const [sheetRow, setSheetRow] = useState<SupplierRiskRow | null>(null)
 
   // Sort: critical/high/sustainability first
   const sorted = [...supplierRows].sort((a, b) => {
@@ -82,7 +74,6 @@ export function SupplierRiskTable(props: SupplierRiskTableProps) {
             <TableBody>
               {sorted.map((row) => {
                 const showActions = hasRisk(row)
-                const hasCompat = hasCompatibleComponents({ component: row.component })
 
                 return (
                   <TableRow
@@ -139,30 +130,15 @@ export function SupplierRiskTable(props: SupplierRiskTableProps) {
                     </TableCell>
                     <TableCell className="text-right">
                       {showActions && (
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="h-7 text-xs gap-1 border-aero-700/50"
-                            >
-                              Change
-                              <ChevronDown className="size-3" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end" className="w-48">
-                            <DropdownMenuItem onClick={() => setSupplierSheetRow(row)} className="gap-2 text-xs">
-                              <ArrowRightLeft className="size-3.5" />
-                              Change Supplier
-                            </DropdownMenuItem>
-                            {hasCompat && (
-                              <DropdownMenuItem onClick={() => setComponentSheetRow(row)} className="gap-2 text-xs">
-                                <Boxes className="size-3.5" />
-                                Change Component
-                              </DropdownMenuItem>
-                            )}
-                          </DropdownMenuContent>
-                        </DropdownMenu>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="h-7 text-xs gap-1.5 border-aero-700/50"
+                          onClick={() => setSheetRow(row)}
+                        >
+                          <ArrowRightLeft className="size-3" />
+                          Modify
+                        </Button>
                       )}
                     </TableCell>
                   </TableRow>
@@ -173,14 +149,9 @@ export function SupplierRiskTable(props: SupplierRiskTableProps) {
         </CardContent>
       </Card>
 
-      <ComparisonSheet
-        row={supplierSheetRow}
-        onClose={() => setSupplierSheetRow(null)}
-      />
-
-      <ComponentComparisonSheet
-        row={componentSheetRow}
-        onClose={() => setComponentSheetRow(null)}
+      <UnifiedChangeSheet
+        row={sheetRow}
+        onClose={() => setSheetRow(null)}
       />
     </>
   )
