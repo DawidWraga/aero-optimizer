@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useRef, useMemo } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { 
@@ -11,18 +13,17 @@ import {
   Line
 } from '@react-three/drei';
 import * as THREE from 'three';
-import { ViewMode, FuelType, MarkerData } from '../types';
-import { FUEL_CONFIGS, CRANFIELD_MARKERS, GLOBAL_HUBS } from '../constants';
+import { ViewMode, FuelType, MarkerData } from '@/data/types';
+import { FUEL_CONFIGS, CRANFIELD_MARKERS, GLOBAL_HUBS } from '@/data/constants';
+import { useAppContext } from '@/context/AppContext';
 
 // --- Sub-components for 3D Elements ---
 
 // 1. Aircraft Model
 const Aircraft = ({ 
-  fuelType, 
-  onInspectEngine 
+  fuelType
 }: { 
   fuelType: FuelType; 
-  onInspectEngine: () => void 
 }) => {
   const morph = FUEL_CONFIGS[fuelType].morphFactor;
   const color = FUEL_CONFIGS[fuelType].color;
@@ -73,10 +74,10 @@ const Aircraft = ({
 
       {/* Engines - Interactive */}
       <group position={[3 * wingScale, -1, 0.5]}>
-         <EngineMesh color={color} onClick={onInspectEngine} label="ENG 1" />
+         <EngineMesh color={color} label="ENG 1" />
       </group>
       <group position={[-3 * wingScale, -1, 0.5]}>
-         <EngineMesh color={color} onClick={onInspectEngine} label="ENG 2" />
+         <EngineMesh color={color} label="ENG 2" />
       </group>
 
       {/* Tail */}
@@ -94,12 +95,11 @@ const Aircraft = ({
   );
 };
 
-const EngineMesh = ({ color, onClick, label }: { color: string, onClick: () => void, label: string }) => {
+const EngineMesh = ({ color, label }: { color: string, label: string }) => {
     const [hovered, setHover] = React.useState(false);
 
     return (
         <group 
-            onClick={(e) => { e.stopPropagation(); onClick(); }}
             onPointerOver={() => setHover(true)}
             onPointerOut={() => setHover(false)}
         >
@@ -122,7 +122,7 @@ const EngineMesh = ({ color, onClick, label }: { color: string, onClick: () => v
             {hovered && (
                 <Html position={[0, 2, 0]} center distanceFactor={10}>
                     <div className="bg-aero-900/90 border border-aero-neon text-aero-neon px-2 py-1 text-xs font-mono whitespace-nowrap rounded pointer-events-none">
-                        CLICK TO INSPECT {label}
+                        {label} - SYSTEM STATUS: NOMINAL
                     </div>
                 </Html>
             )}
@@ -301,14 +301,9 @@ const CameraController = ({ mode, promoMode }: { mode: ViewMode, promoMode: bool
     return null;
 }
 
-interface Scene3DProps {
-  viewMode: ViewMode;
-  fuelType: FuelType;
-  promoMode: boolean;
-  onInspect: (part: string) => void;
-}
+export const Scene3D: React.FC = () => {
+  const { viewMode, fuelType, promoMode } = useAppContext();
 
-export const Scene3D: React.FC<Scene3DProps> = ({ viewMode, fuelType, promoMode, onInspect }) => {
   return (
     <div className="w-full h-full absolute inset-0 bg-aero-900">
       <Canvas shadows dpr={[1, 2]}>
@@ -326,7 +321,6 @@ export const Scene3D: React.FC<Scene3DProps> = ({ viewMode, fuelType, promoMode,
              <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
                 <Aircraft 
                     fuelType={fuelType} 
-                    onInspectEngine={() => onInspect('Hydrogen Combustion Engine')}
                 />
              </Float>
         </group>
@@ -335,7 +329,7 @@ export const Scene3D: React.FC<Scene3DProps> = ({ viewMode, fuelType, promoMode,
             <Airport />
              {/* Show aircraft landed in airport mode */}
             <group position={[0, 0.7, 0]} scale={[0.5, 0.5, 0.5]}>
-                 <Aircraft fuelType={fuelType} onInspectEngine={() => {}} />
+                 <Aircraft fuelType={fuelType} />
             </group>
         </group>
 

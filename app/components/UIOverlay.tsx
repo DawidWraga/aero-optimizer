@@ -1,28 +1,22 @@
+"use client";
+
 import React from 'react';
-import { ViewMode, FuelType } from '../types';
-import { VIEW_STEPS, FUEL_CONFIGS } from '../constants';
-import { Plane, Droplets, Zap, Flame, Map, PlayCircle, PauseCircle, Menu } from 'lucide-react';
+import { FuelType, ViewMode } from '@/data/types';
+import { VIEW_STEPS, FUEL_CONFIGS } from '@/data/constants';
+import { Plane, Droplets, Zap, Flame, Map, PlayCircle, PauseCircle } from 'lucide-react';
 import { clsx } from 'clsx';
+import { useAppContext } from '@/context/AppContext';
 
-interface UIOverlayProps {
-  viewMode: ViewMode;
-  setViewMode: (mode: ViewMode) => void;
-  fuelType: FuelType;
-  setFuelType: (type: FuelType) => void;
-  promoMode: boolean;
-  setPromoMode: (v: boolean) => void;
-  apiKeySet: boolean;
-}
-
-export const UIOverlay: React.FC<UIOverlayProps> = ({
-  viewMode,
-  setViewMode,
-  fuelType,
-  setFuelType,
-  promoMode,
-  setPromoMode,
-  apiKeySet
-}) => {
+export const UIOverlay: React.FC = () => {
+  const {
+    viewMode,
+    setViewMode,
+    fuelType,
+    setFuelType,
+    promoMode,
+    setPromoMode,
+    apiKeySet
+  } = useAppContext();
   
   const getFuelIcon = (type: FuelType) => {
     switch(type) {
