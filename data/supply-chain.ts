@@ -134,6 +134,67 @@ export function getAlternatives(opts: { component: string; currentSupplierId: st
 /** All unique component names */
 export const COMPONENTS = [...new Set(ALL_SUPPLIERS.map((s) => s.component))]
 
+// ── Compatible component alternatives ──────────────────────
+
+export interface ComponentAlternative {
+  component: string
+  /** Why this is a viable substitute */
+  rationale: string
+  /** Trade-off summary */
+  tradeoff: string
+  /** Weight delta in kg (negative = lighter) */
+  weightDelta: number
+  /** Cost delta as percentage (negative = cheaper) */
+  costDelta: number
+  /** Sustainability score 0-100 */
+  sustainabilityScore: number
+  /** Structural integrity score 0-100 */
+  structuralScore: number
+  /** Default supplier id for this component */
+  defaultSupplierId: string
+}
+
+/**
+ * Maps a component to its substitutable alternatives.
+ * E.g. Titanium Forgings can be swapped for Aluminum Alloys or Composite Panels.
+ */
+export const COMPATIBLE_COMPONENTS: Record<string, ComponentAlternative[]> = {
+  'Titanium Forgings': [
+    { component: 'Aluminum Alloys', rationale: 'Lower-density alloy for non-critical structural joins', tradeoff: 'Lighter & cheaper but lower fatigue resistance', weightDelta: -120, costDelta: -35, sustainabilityScore: 72, structuralScore: 68, defaultSupplierId: 's9' },
+    { component: 'Composite Panels', rationale: 'Carbon-fiber-reinforced polymer as structural replacement', tradeoff: 'Excellent weight savings; longer lead time for certification', weightDelta: -200, costDelta: 15, sustainabilityScore: 85, structuralScore: 78, defaultSupplierId: 's5' },
+  ],
+  'Aluminum Alloys': [
+    { component: 'Composite Panels', rationale: 'Advanced composites as full structural replacement', tradeoff: 'Lighter but more expensive; superior corrosion resistance', weightDelta: -90, costDelta: 25, sustainabilityScore: 88, structuralScore: 82, defaultSupplierId: 's5' },
+    { component: 'Titanium Forgings', rationale: 'High-strength titanium for critical load paths', tradeoff: 'Heavier & more expensive; far superior fatigue life', weightDelta: 120, costDelta: 40, sustainabilityScore: 55, structuralScore: 96, defaultSupplierId: 'alt-ti-2' },
+  ],
+  'Carbon Fiber': [
+    { component: 'Composite Panels', rationale: 'Pre-impregnated composite panels with embedded fiber', tradeoff: 'Easier manufacturing; slightly lower tensile strength', weightDelta: 15, costDelta: -10, sustainabilityScore: 80, structuralScore: 85, defaultSupplierId: 's5' },
+  ],
+  'Composite Panels': [
+    { component: 'Aluminum Alloys', rationale: 'Traditional alloy panels for cost-sensitive areas', tradeoff: 'Cheaper but heavier; well-understood maintenance', weightDelta: 90, costDelta: -30, sustainabilityScore: 60, structuralScore: 75, defaultSupplierId: 'alt-al-1' },
+    { component: 'Carbon Fiber', rationale: 'Raw carbon fiber layup for maximum strength-to-weight', tradeoff: 'Best strength-to-weight but expensive and slow to produce', weightDelta: -15, costDelta: 20, sustainabilityScore: 82, structuralScore: 95, defaultSupplierId: 's10' },
+  ],
+  'Engines': [
+    { component: 'Engines', rationale: 'Hydrogen fuel-cell powertrain (experimental)', tradeoff: 'Zero emissions; limited range; requires new infrastructure', weightDelta: 300, costDelta: 80, sustainabilityScore: 98, structuralScore: 70, defaultSupplierId: 'alt-eng-1' },
+  ],
+  'Actuation Systems': [
+    { component: 'Flight Control Systems', rationale: 'Integrated fly-by-wire with built-in actuation', tradeoff: 'Consolidated system reduces part count; higher upfront cost', weightDelta: -25, costDelta: 30, sustainabilityScore: 78, structuralScore: 88, defaultSupplierId: 'alt-fcs-1' },
+  ],
+  'Flight Control Systems': [
+    { component: 'Actuation Systems', rationale: 'Discrete actuators with separate FCS controller', tradeoff: 'More modular; easier to service individual units', weightDelta: 25, costDelta: -20, sustainabilityScore: 70, structuralScore: 80, defaultSupplierId: 'alt-act-1' },
+  ],
+}
+
+/** Check if a component has compatible alternatives */
+export function hasCompatibleComponents(opts: { component: string }): boolean {
+  return (COMPATIBLE_COMPONENTS[opts.component]?.length ?? 0) > 0
+}
+
+/** Get compatible component alternatives */
+export function getCompatibleComponents(opts: { component: string }): ComponentAlternative[] {
+  return COMPATIBLE_COMPONENTS[opts.component] ?? []
+}
+
 // ── Backward-compat: SUPPLIERS is the "default" set (original 12) ──
 export const SUPPLIERS = ALL_SUPPLIERS.filter((s) => s.id.startsWith('s'))
 

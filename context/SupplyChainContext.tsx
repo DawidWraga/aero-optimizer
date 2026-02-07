@@ -75,6 +75,22 @@ function useSupplyChainInner() {
     []
   )
 
+  /** Replace a component entirely with a compatible alternative */
+  const swapComponent = useCallback(
+    (opts: { airplaneId: string; oldComponent: string; newComponent: string; newSupplierId: string }) => {
+      setAirplanes((prev) =>
+        prev.map((a) => {
+          if (a.id !== opts.airplaneId) return a
+          const next = { ...a.suppliers }
+          delete next[opts.oldComponent]
+          next[opts.newComponent] = opts.newSupplierId
+          return { ...a, suppliers: next }
+        })
+      )
+    },
+    []
+  )
+
   return {
     airplanes,
     selectedAirplaneId,
@@ -83,6 +99,7 @@ function useSupplyChainInner() {
     supplierRows,
     getAirplaneRiskCount,
     swapSupplier,
+    swapComponent,
   }
 }
 

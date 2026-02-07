@@ -6,12 +6,19 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { Button } from '@/components/ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import { useSupplyChain, type SupplierRiskRow } from '@/context/SupplyChainContext'
 import { cn } from '@/lib/utils'
 import { FuelType } from '@/data/types'
-import { type RiskLevel } from '@/data/supply-chain'
-import { AlertTriangle, ArrowRightLeft, Leaf, Fuel } from 'lucide-react'
+import { type RiskLevel, hasCompatibleComponents } from '@/data/supply-chain'
+import { AlertTriangle, ArrowRightLeft, ChevronDown, Leaf, Fuel, Boxes } from 'lucide-react'
 import { ComparisonSheet } from './ComparisonSheet'
+import { ComponentComparisonSheet } from './ComponentComparisonSheet'
 
 const RISK_STYLES: Record<RiskLevel, string> = {
   low: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
@@ -36,7 +43,8 @@ export interface SupplierRiskTableProps {}
 export function SupplierRiskTable(props: SupplierRiskTableProps) {
   const {} = props
   const { supplierRows, selectedAirplane } = useSupplyChain()
-  const [sheetRow, setSheetRow] = useState<SupplierRiskRow | null>(null)
+  const [supplierSheetRow, setSupplierSheetRow] = useState<SupplierRiskRow | null>(null)
+  const [componentSheetRow, setComponentSheetRow] = useState<SupplierRiskRow | null>(null)
 
   // Sort: critical/high/sustainability first
   const sorted = [...supplierRows].sort((a, b) => {
@@ -72,82 +80,107 @@ export function SupplierRiskTable(props: SupplierRiskTableProps) {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {sorted.map((row) => (
-                <TableRow
-                  key={row.component}
-                  className={cn(
-                    'border-aero-700/30',
-                    row.sustainabilityRisk && 'bg-rose-500/[0.03]',
-                  )}
-                >
-                  <TableCell className="font-medium">{row.component}</TableCell>
-                  <TableCell className="text-slate-300">{row.supplier.name}</TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-1.5">
-                      {row.sustainabilityRisk ? (
-                        <Fuel className="size-3.5 text-rose-400 shrink-0" />
-                      ) : (
-                        <Leaf className="size-3.5 text-emerald-400 shrink-0" />
-                      )}
-                      <div className="flex gap-1 flex-wrap">
-                        {row.supplier.fuelCompatibility.map((f) => (
-                          <Badge
-                            key={f}
-                            variant="secondary"
-                            className={cn(
-                              'text-[10px] px-1.5',
-                              f === FuelType.KEROSENE && row.sustainabilityRisk
-                                ? 'bg-rose-500/10 text-rose-400 border-rose-500/20'
-                                : 'bg-aero-900/60 text-slate-400 border-aero-700/50',
-                            )}
-                          >
-                            {FUEL_SHORT[f]}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell className="font-mono text-slate-300 text-xs">{row.supplier.leadTimeDays}d</TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-2 min-w-[90px]">
-                      <Progress value={row.supplier.onTimeDelivery} className="h-1.5 flex-1" />
-                      <span className="font-mono text-xs text-slate-400">{row.supplier.onTimeDelivery}%</span>
-                    </div>
-                  </TableCell>
-                  <TableCell className="font-mono text-xs text-slate-300">{row.supplier.qualityScore}</TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-1.5">
-                      {row.sustainabilityRisk && (
-                        <AlertTriangle className="size-3.5 text-rose-400 shrink-0" />
-                      )}
-                      <Badge variant="secondary" className={RISK_STYLES[row.riskLevel]}>
-                        {row.riskLevel}
-                      </Badge>
-                    </div>
-                  </TableCell>
-                  <TableCell className="text-right">
-                    {hasRisk(row) && (
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="h-7 text-xs gap-1.5 border-aero-700/50"
-                        onClick={() => setSheetRow(row)}
-                      >
-                        <ArrowRightLeft className="size-3" />
-                        Change
-                      </Button>
+              {sorted.map((row) => {
+                const showActions = hasRisk(row)
+                const hasCompat = hasCompatibleComponents({ component: row.component })
+
+                return (
+                  <TableRow
+                    key={row.component}
+                    className={cn(
+                      'border-aero-700/30',
+                      row.sustainabilityRisk && 'bg-rose-500/3',
                     )}
-                  </TableCell>
-                </TableRow>
-              ))}
+                  >
+                    <TableCell className="font-medium">{row.component}</TableCell>
+                    <TableCell className="text-slate-300">{row.supplier.name}</TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-1.5">
+                        {row.sustainabilityRisk ? (
+                          <Fuel className="size-3.5 text-rose-400 shrink-0" />
+                        ) : (
+                          <Leaf className="size-3.5 text-emerald-400 shrink-0" />
+                        )}
+                        <div className="flex gap-1 flex-wrap">
+                          {row.supplier.fuelCompatibility.map((f) => (
+                            <Badge
+                              key={f}
+                              variant="secondary"
+                              className={cn(
+                                'text-[10px] px-1.5',
+                                f === FuelType.KEROSENE && row.sustainabilityRisk
+                                  ? 'bg-rose-500/10 text-rose-400 border-rose-500/20'
+                                  : 'bg-aero-900/60 text-slate-400 border-aero-700/50',
+                              )}
+                            >
+                              {FUEL_SHORT[f]}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell className="font-mono text-slate-300 text-xs">{row.supplier.leadTimeDays}d</TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-2 min-w-[90px]">
+                        <Progress value={row.supplier.onTimeDelivery} className="h-1.5 flex-1" />
+                        <span className="font-mono text-xs text-slate-400">{row.supplier.onTimeDelivery}%</span>
+                      </div>
+                    </TableCell>
+                    <TableCell className="font-mono text-xs text-slate-300">{row.supplier.qualityScore}</TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-1.5">
+                        {row.sustainabilityRisk && (
+                          <AlertTriangle className="size-3.5 text-rose-400 shrink-0" />
+                        )}
+                        <Badge variant="secondary" className={RISK_STYLES[row.riskLevel]}>
+                          {row.riskLevel}
+                        </Badge>
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      {showActions && (
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="h-7 text-xs gap-1 border-aero-700/50"
+                            >
+                              Change
+                              <ChevronDown className="size-3" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end" className="w-48">
+                            <DropdownMenuItem onClick={() => setSupplierSheetRow(row)} className="gap-2 text-xs">
+                              <ArrowRightLeft className="size-3.5" />
+                              Change Supplier
+                            </DropdownMenuItem>
+                            {hasCompat && (
+                              <DropdownMenuItem onClick={() => setComponentSheetRow(row)} className="gap-2 text-xs">
+                                <Boxes className="size-3.5" />
+                                Change Component
+                              </DropdownMenuItem>
+                            )}
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      )}
+                    </TableCell>
+                  </TableRow>
+                )
+              })}
             </TableBody>
           </Table>
         </CardContent>
       </Card>
 
       <ComparisonSheet
-        row={sheetRow}
-        onClose={() => setSheetRow(null)}
+        row={supplierSheetRow}
+        onClose={() => setSupplierSheetRow(null)}
+      />
+
+      <ComponentComparisonSheet
+        row={componentSheetRow}
+        onClose={() => setComponentSheetRow(null)}
       />
     </>
   )
