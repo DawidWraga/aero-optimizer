@@ -2,11 +2,18 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { TabId } from '@/data/types';
-import { Plus, ChevronDown, ArrowLeft } from 'lucide-react';
+import { Plus, ArrowLeft } from 'lucide-react';
 import { clsx } from 'clsx';
 import { useAppContext } from '@/context/AppContext';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 const AIRPORTS = [
   { id: 'cranfield', label: 'Cranfield Airport' },
@@ -28,11 +35,13 @@ export function Navbar() {
   } = useAppContext();
 
   const pathname = usePathname();
+  const router = useRouter();
   const isHome = pathname === '/';
+  const isAnalysis = pathname === '/analysis';
 
   return (
     <nav className="sticky top-0 z-50 flex items-center gap-4 px-4 py-3 bg-aero-900/80 backdrop-blur border-b border-aero-700">
-      {!isHome && (
+      {!isHome && !isAnalysis && (
         <Link
           href="/"
           className={clsx(
@@ -46,32 +55,36 @@ export function Navbar() {
       )}
 
       {/* Airport Dropdown */}
-      <div className="relative">
-        <select
+      <Select value={selectedAirport} onValueChange={setSelectedAirport}>
+        <SelectTrigger
           aria-label="Select airport"
-          value={selectedAirport}
-          onChange={(e) => setSelectedAirport(e.target.value)}
           className={clsx(
-            'appearance-none bg-aero-900 border border-aero-700 text-white',
-            'pl-3 pr-8 py-1.5 rounded text-sm font-mono cursor-pointer',
-            'hover:border-slate-500 focus:outline-none focus:border-aero-neon'
+            'bg-aero-900 border-aero-700 text-white font-mono text-sm',
+            'hover:border-slate-500 focus:border-aero-neon'
           )}
         >
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
           {AIRPORTS.map((a) => (
-            <option key={a.id} value={a.id}>{a.label}</option>
+            <SelectItem key={a.id} value={a.id}>
+              {a.label}
+            </SelectItem>
           ))}
-        </select>
-        <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 pointer-events-none" />
-      </div>
+        </SelectContent>
+      </Select>
 
       {/* Tab Buttons */}
       <div className="flex gap-1">
         {TABS.map((tab) => {
-          const isActive = activeTab === tab.id;
+          const isActive = tab.id === 'analysis' ? isAnalysis : !isAnalysis;
           return (
             <button
               key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
+              onClick={() => {
+                setActiveTab(tab.id);
+                router.push(tab.id === 'analysis' ? '/analysis' : '/');
+              }}
               className={clsx(
                 'px-4 py-1.5 rounded text-sm font-mono transition-colors',
                 isActive
