@@ -191,12 +191,12 @@ export function UnifiedChangeSheet({ row, onClose }: UnifiedChangeSheetProps) {
         </SheetHeader>
 
         <Tabs defaultValue="supplier" className="mt-6">
-          <TabsList className="grid w-full grid-cols-2">
+          {/* <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="supplier">Change Supplier</TabsTrigger>
             <TabsTrigger value="component" disabled={componentAlternatives.length === 0}>
               Change Component {componentAlternatives.length > 0 && `(${componentAlternatives.length})`}
             </TabsTrigger>
-          </TabsList>
+          </TabsList> */}
 
           {/* === SUPPLIER TAB === */}
           <TabsContent value="supplier" className="space-y-6 mt-6">

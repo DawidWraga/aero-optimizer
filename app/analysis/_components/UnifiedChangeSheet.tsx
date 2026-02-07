@@ -191,15 +191,15 @@ export function UnifiedChangeSheet({ row, onClose }: UnifiedChangeSheetProps) {
         </SheetHeader>
 
         <Tabs defaultValue="supplier" className="mt-6">
-          <TabsList className="grid w-full grid-cols-2">
+          {/* <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="supplier">Change Supplier</TabsTrigger>
             <TabsTrigger value="component" disabled={componentAlternatives.length === 0}>
               Change Component {componentAlternatives.length > 0 && `(${componentAlternatives.length})`}
             </TabsTrigger>
-          </TabsList>
+          </TabsList> */}
 
           {/* === SUPPLIER TAB === */}
-          <TabsContent value="supplier" className="space-y-6 mt-6">
+          <TabsContent value="supplier" className="space-y-6 mt-6 flex-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               <Card className="bg-aero-800/60 border-aero-700/50">
                 <CardHeader className="pb-2">
@@ -283,7 +283,7 @@ export function UnifiedChangeSheet({ row, onClose }: UnifiedChangeSheetProps) {
           </TabsContent>
 
           {/* === COMPONENT TAB === */}
-          <TabsContent value="component" className="space-y-6 mt-6">
+          <TabsContent value="component" className="space-y-6 mt-6 flex-auto">
              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                <Card className="bg-aero-800/60 border-aero-700/50">
                   <CardHeader className="pb-2">
