@@ -1,3 +1,5 @@
+afetr making changes use npm run type-check to verify
+
 when managing data, put all mock data in /data folder
 
 
@@ -5,6 +7,8 @@ when managing data, put all mock data in /data folder
 
 when managing state, use this pattern for context:
 
+
+put all context in /context folder
 
 ## State Management with React Context
 
