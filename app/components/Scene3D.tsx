@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useRef } from 'react';
+import { useRouter } from 'next/navigation';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { 
   Stars, 
@@ -297,6 +298,28 @@ const CameraController = ({ mode, promoMode }: { mode: ViewMode, promoMode: bool
     return null;
 }
 
+/** Wrapper to make the Aircraft clickable and navigate to visualizer */
+const ClickableAircraft = ({ fuelType }: { fuelType: FuelType }) => {
+  const router = useRouter();
+  return (
+    <group
+      onClick={(e) => {
+        e.stopPropagation();
+        router.push('/airplane/default');
+      }}
+      onPointerOver={(e) => {
+        e.stopPropagation();
+        document.body.style.cursor = 'pointer';
+      }}
+      onPointerOut={() => {
+        document.body.style.cursor = 'auto';
+      }}
+    >
+      <Aircraft fuelType={fuelType} />
+    </group>
+  );
+};
+
 export const Scene3D: React.FC = () => {
   const { viewMode, fuelType, promoMode } = useAppContext();
 
@@ -315,7 +338,7 @@ export const Scene3D: React.FC = () => {
 
         <group visible={viewMode === ViewMode.AIRCRAFT}>
              <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
-                <Aircraft fuelType={fuelType} />
+                <ClickableAircraft fuelType={fuelType} />
              </Float>
         </group>
 
@@ -323,7 +346,7 @@ export const Scene3D: React.FC = () => {
             <Airport />
              {/* Show aircraft landed in airport mode */}
             <group position={[0, 0.7, 0]} scale={[0.5, 0.5, 0.5]}>
-                 <Aircraft fuelType={fuelType} />
+                 <ClickableAircraft fuelType={fuelType} />
             </group>
         </group>
 
