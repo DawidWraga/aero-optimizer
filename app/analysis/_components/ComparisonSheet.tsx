@@ -103,7 +103,7 @@ export function ComparisonSheet(props: ComparisonSheetProps) {
     <Sheet open={!!row} onOpenChange={(open) => !open && onClose()}>
       <SheetContent
         side="right"
-        className="!w-[90vw] !max-w-5xl overflow-y-auto"
+        className="w-[90vw]! max-w-5xl! overflow-y-auto"
       >
         <SheetHeader>
           <SheetTitle className="font-mono">
