@@ -1,14 +1,14 @@
 "use client"
 
 import { createContext, ReactNode, useCallback, useContext, useMemo, useState } from 'react'
-import { FuelType } from '@/data/types'
+import { FuelType } from '@/app/data/types'
 import {
   Airplane,
   INITIAL_AIRPLANES,
   getSupplierById,
   type Supplier,
   type RiskLevel,
-} from '@/data/supply-chain'
+} from '@/app/data/supply-chain'
 
 export interface SupplierRiskRow {
   component: string

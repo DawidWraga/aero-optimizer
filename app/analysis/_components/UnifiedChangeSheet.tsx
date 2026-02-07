@@ -13,7 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { useSupplyChain, type SupplierRiskRow } from '@/context/SupplyChainContext'
+import { useSupplyChain, type SupplierRiskRow } from '@/app/context/SupplyChainContext'
 import {
   getAlternatives,
   getCompatibleComponents,
@@ -21,8 +21,8 @@ import {
   type Supplier,
   type RiskLevel,
   type ComponentAlternative
-} from '@/data/supply-chain'
-import { FuelType } from '@/data/types'
+} from '@/app/data/supply-chain'
+import { FuelType } from '@/app/data/types'
 import { cn } from '@/lib/utils'
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from '@/components/ui/chart'
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis } from 'recharts'

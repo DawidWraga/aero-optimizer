@@ -1,7 +1,7 @@
 'use client'
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { SupplyChainProvider } from '@/context/SupplyChainContext'
+import { SupplyChainProvider } from '@/app/context/SupplyChainContext'
 import { AirplaneSelector } from './_components/AirplaneSelector'
 import { SupplierRiskTable } from './_components/SupplierRiskTable'
 import { KpiCards } from './_components/KpiCards'

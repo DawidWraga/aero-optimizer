@@ -6,10 +6,10 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { Button } from '@/components/ui/button'
-import { useSupplyChain, type SupplierRiskRow } from '@/context/SupplyChainContext'
+import { useSupplyChain, type SupplierRiskRow } from '@/app/context/SupplyChainContext'
 import { cn } from '@/lib/utils'
-import { FuelType } from '@/data/types'
-import type { RiskLevel } from '@/data/supply-chain'
+import { FuelType } from '@/app/data/types'
+import type { RiskLevel } from '@/app/data/supply-chain'
 import { AlertTriangle, ArrowRightLeft, Leaf, Fuel } from 'lucide-react'
 import { UnifiedChangeSheet } from './UnifiedChangeSheet'
 

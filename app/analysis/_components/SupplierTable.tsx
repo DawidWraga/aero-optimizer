@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
-import { SUPPLIERS, type RiskLevel } from '@/data/supply-chain'
+import { SUPPLIERS, type RiskLevel } from '@/app/data/supply-chain'
 import { cn } from '@/lib/utils'
 
 const RISK_STYLES: Record<RiskLevel, { variant: 'default' | 'secondary' | 'destructive' | 'outline'; className: string }> = {

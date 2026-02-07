@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from '@/components/ui/chart'
-import { MONTHLY_SPEND } from '@/data/supply-chain'
+import { MONTHLY_SPEND } from '@/app/data/supply-chain'
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from 'recharts'
 
 const chartConfig = {

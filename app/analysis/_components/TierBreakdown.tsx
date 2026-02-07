@@ -1,7 +1,7 @@
 'use client'
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
-import { SUPPLIERS } from '@/data/supply-chain'
+import { SUPPLIERS } from '@/app/data/supply-chain'
 import { cn } from '@/lib/utils'
 
 const TIERS = [

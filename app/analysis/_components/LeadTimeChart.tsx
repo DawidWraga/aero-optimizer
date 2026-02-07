@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from '@/components/ui/chart'
-import { LEAD_TIME_DATA } from '@/data/supply-chain'
+import { LEAD_TIME_DATA } from '@/app/data/supply-chain'
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts'
 
 const chartConfig = {

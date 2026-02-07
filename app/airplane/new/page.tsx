@@ -18,7 +18,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { FuelType } from '@/data/types';
+import { FuelType } from '@/app/data/types';
 import { Flame, Droplets, Zap, ShieldAlert, Factory, Thermometer, ScrollText, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 

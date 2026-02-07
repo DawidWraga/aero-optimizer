@@ -1,7 +1,7 @@
 'use client'
 
 import { Card, CardContent } from '@/components/ui/card'
-import { SUPPLY_CHAIN_KPIS } from '@/data/supply-chain'
+import { SUPPLY_CHAIN_KPIS } from '@/app/data/supply-chain'
 import { Package, Globe, Clock, ShieldAlert, TrendingUp, DollarSign } from 'lucide-react'
 import { cn } from '@/lib/utils'
 

@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from '@/components/ui/chart'
-import { COMPONENT_GROUPS } from '@/data/supply-chain'
+import { COMPONENT_GROUPS } from '@/app/data/supply-chain'
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Cell } from 'recharts'
 
 const chartConfig = COMPONENT_GROUPS.reduce<ChartConfig>((acc, g) => {

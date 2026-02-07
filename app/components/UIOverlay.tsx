@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { FuelType, ViewMode } from '@/data/types';
-import { VIEW_STEPS, FUEL_CONFIGS } from '@/data/constants';
+import { FuelType, ViewMode } from '@/app/data/types';
+import { VIEW_STEPS, FUEL_CONFIGS } from '@/app/data/constants';
 import { Plane, Droplets, Zap, Flame, PlayCircle, PauseCircle } from 'lucide-react';
 import { clsx } from 'clsx';
-import { useAppContext } from '@/context/AppContext';
+import { useAppContext } from '@/app/context/AppContext';
 
 export const UIOverlay: React.FC = () => {
   const {

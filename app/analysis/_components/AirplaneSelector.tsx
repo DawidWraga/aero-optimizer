@@ -1,6 +1,6 @@
 'use client'
 
-import { useSupplyChain } from '@/context/SupplyChainContext'
+import { useSupplyChain } from '@/app/context/SupplyChainContext'
 import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import { Plane } from 'lucide-react'
