@@ -10,7 +10,6 @@ function useAppContextInner() {
   const [promoMode, setPromoMode] = useState<boolean>(false)
   const [activeTab, setActiveTab] = useState<TabId>('editor')
   const [selectedAirport, setSelectedAirport] = useState<string>('cranfield')
-
   const apiKeySet = !!process.env.API_KEY;
 
   return { 

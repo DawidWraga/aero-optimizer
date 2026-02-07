@@ -315,9 +315,7 @@ export const Scene3D: React.FC = () => {
 
         <group visible={viewMode === ViewMode.AIRCRAFT}>
              <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
-                <Aircraft 
-                    fuelType={fuelType} 
-                />
+                <Aircraft fuelType={fuelType} />
              </Float>
         </group>
 

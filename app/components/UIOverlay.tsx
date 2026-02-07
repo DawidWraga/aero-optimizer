@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import Link from 'next/link';
 import { TabId } from '@/data/types';
 import { Plus, ChevronDown } from 'lucide-react';
 import { clsx } from 'clsx';
@@ -73,7 +74,8 @@ export const UIOverlay: React.FC = () => {
 
       {/* Add Airplane Button - top right of content area */}
       <div className="pointer-events-auto absolute top-16 right-6">
-        <button
+        <Link
+          href="/airplane/new"
           className={clsx(
             "flex items-center gap-2 px-4 py-2 rounded border",
             "bg-aero-900/80 border-aero-700 text-white",
@@ -82,7 +84,7 @@ export const UIOverlay: React.FC = () => {
         >
           <Plus className="w-4 h-4" />
           Add Airplane
-        </button>
+        </Link>
       </div>
     </div>
   );
