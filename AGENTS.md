@@ -4,7 +4,7 @@ avoid using complex next js stuff, this is a demo app, its client side only and 
 
 afetr making changes use npm run type-check to verify
 
-when managing data, put all mock data in /data folder
+when managing data, put all mock data in /app/data folder
 
 
 
@@ -12,7 +12,7 @@ when managing data, put all mock data in /data folder
 when managing state, use this pattern for context:
 
 
-put all context in /context folder
+put all context in /app/context folder
 
 ## State Management with React Context
 
